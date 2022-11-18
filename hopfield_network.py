@@ -1,40 +1,30 @@
-# imports
 import numpy as np
-import matplotlib.pyplot as plt
+
+from learning_rules import LearningRuleType
 
 
-class HopfieldNetwork:  # network class
-    # initialize network variables and memory
-    def __init__(self, input):
+class HopfieldNetwork:
+    # create network with set of patterns. Patterns -> array of arrays? Single image is going to be represented by single array?
+    # number_of_neurons correspond to the size of the single pattern?
+    def __init__(self, patterns):
+        self.memory = np.array(patterns)
+        self.number_of_neurons = patterns.shape[1]
+        self.neurons_state = np.random.randint(-5, -5, (self.number_of_neurons, 1))
+        self.weights = np.zeros(self.number_of_neurons, self.number_of_neurons)
 
-        # patterns for network training / retrieval
-        self.memory = np.array(input)
-        # single vs. multiple memories
-        if self.memory.size > 1:
-            self.n = self.memory.shape[1]
-        else:
-            self.n = len(self.memory)
-        # network construction
-        self.state = np.random.randint(-2, 2, (self.n, 1))  # state vector
-        self.weights = np.zeros((self.n, self.n))  # weights vector
-        self.energies = []  # container for tracking of energy
-
-    def network_learning(self):  # learn the pattern / patterns
-        self.weights = (1 / self.memory.shape[0]) * self.memory.T @ self.memory  # hebbian learning
+    def learning(self, learning_rule: LearningRuleType):
+        self.weights = learning_rule(self.memory)
+        # to ensure convergence
         np.fill_diagonal(self.weights, 0)
 
-    def update_network_state(self, n_update):  # update network
-        for neuron in range(n_update):  # update n neurons randomly
-            self.rand_index = np.random.randint(0, self.n)  # pick a random neuron in the state vector
-            # Compute activation for randomly indexed neuron
-            self.index_activation = np.dot(self.weights[self.rand_index, :],
-                                           self.state)
-            # threshold function for binary state change
-            if self.index_activation < 0:
-                self.state[self.rand_index] = -1
-            else:
-                self.state[self.rand_index] = 1
+    def update_state(self, number_of_neurons_to_update):
+        for neuron in range(number_of_neurons_to_update):
+            random_index = np.random.randint(0, self.number_of_neurons-1)
+            self.neurons_state[random_index] = self.__threshold_state_change_function(random_index)
 
-    def compute_energy(self):  # compute energy
-        self.energy = -0.5 * np.dot(np.dot(self.state.T, self.weights), self.state)
-        self.energies.append(self.energy)
+    def __activation_function(self, neuron_index):
+        return np.dot(self.weights[neuron_index, :], self.neurons_state)
+
+    def __threshold_state_change_function(self, neuron_index):
+        return 1 if self.__activation_function(neuron_index) > 0 else -1
+
