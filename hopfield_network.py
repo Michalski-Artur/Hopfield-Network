@@ -7,10 +7,10 @@ class HopfieldNetwork:
     # create network with set of patterns. Patterns -> array of arrays? Single image is going to be represented by single array?
     # number_of_neurons correspond to the size of the single pattern?
     def __init__(self, patterns):
-        self.memory = np.array(patterns)
+        self.memory = patterns
         self.number_of_neurons = patterns.shape[1]
-        self.neurons_state = np.random.randint(-5, -5, (self.number_of_neurons, 1))
-        self.weights = np.zeros(self.number_of_neurons, self.number_of_neurons)
+        self.neurons_state = np.random.randint(-5, 5, (self.number_of_neurons, 1))
+        self.weights = np.zeros((self.number_of_neurons, self.number_of_neurons))
 
     def learning(self, learning_rule: LearningRuleType):
         self.weights = learning_rule(self.memory)
