@@ -7,7 +7,7 @@ from hopfield_network import HopfieldNetwork
 from learning_rules import LearningRules
 
 # Hopfield network parameters
-learning_rule = LearningRules.hebb
+learning_rule = LearningRules.oja
 is_update_synchronous = True
 
 # Read collection of patterns from file

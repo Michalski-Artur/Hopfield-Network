@@ -16,8 +16,6 @@ class HopfieldNetwork:
 
     def learning(self, learning_rule: LearningRuleType):
         self.weights = learning_rule(self.memory)
-        # to ensure convergence, remember that matrix also has to be symmetric
-        np.fill_diagonal(self.weights, 0)
 
     def set_initial_neurons_state(self, neurons_state):
         self.neurons_state = neurons_state
