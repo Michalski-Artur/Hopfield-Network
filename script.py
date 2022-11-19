@@ -6,6 +6,10 @@ from data_visualizer import DataVisualizer
 from hopfield_network import HopfieldNetwork
 from learning_rules import LearningRules
 
+# Hopfield network parameters
+learning_rule = LearningRules.hebb
+is_update_synchronous = True
+
 # Read collection of patterns from file
 path_to_file = 'data/large-25x25.csv'
 single_pattern_size = (25, 25)
@@ -21,10 +25,10 @@ for i in indexes_to_flip:
     noised_pattern[i] *= -1
 
 # Create network and initialize memory with collection of patterns
-hopfield_network = HopfieldNetwork(patterns)
+hopfield_network = HopfieldNetwork(patterns, is_update_synchronous)
 
 # Learn network using one of supported learning rules
-hopfield_network.learning(LearningRules.hebb)
+hopfield_network.learning(learning_rule)
 
 # Set network state to the noised image
 hopfield_network.set_initial_neurons_state(noised_pattern)

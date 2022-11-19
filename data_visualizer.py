@@ -11,7 +11,7 @@ class DataVisualizer:
     inactive_neuron_color = (135, 206, 250)
     other_state_neuron_color = (255, 140, 0)
     surface_color = (211, 211, 211)
-    timeframe = 50
+    timeframe = 100
     neurons_updated_in_frame = 16
 
     @staticmethod
