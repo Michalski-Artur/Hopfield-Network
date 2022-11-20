@@ -5,8 +5,8 @@ import numpy as np
 
 class DataVisualizer:
 
+    max_dimension = 600
     cell_size = 30
-    fig_size = (20, 20)
     active_neuron_color = (0, 0, 128)
     inactive_neuron_color = (135, 206, 250)
     other_state_neuron_color = (255, 140, 0)
@@ -20,6 +20,7 @@ class DataVisualizer:
         pygame.init()
         # set dimensions of board and cellsize
         # window size: single_pattern_size[0] X single_pattern_size[1]
+        DataVisualizer.cell_size = max(DataVisualizer.max_dimension / single_pattern_size[1], DataVisualizer.max_dimension / single_pattern_size[0])
         surface = pygame.display.set_mode((single_pattern_size[0] * DataVisualizer.cell_size,
                                            single_pattern_size[1] * DataVisualizer.cell_size))
         pygame.display.set_caption("   ")
@@ -66,7 +67,7 @@ class DataVisualizer:
     def visualize_pattern(pattern):
         # Conversion from bipolar to unipolar
         pattern = (pattern + 1) / 2
-        plt.figure("pattern", figsize=pattern.shape)
+        plt.figure("pattern", figsize=pattern.shape, dpi=DataVisualizer.cell_size)
         plt.imshow(pattern, cmap='RdPu')
         plt.setp(plt.gcf().get_axes(), xticks=[], yticks=[])
         plt.show()
