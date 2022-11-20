@@ -15,26 +15,23 @@ class LearningRules:
 
     @staticmethod
     def oja(patterns: np.ndarray):
-        # weights = np.zeros((patterns.shape[1], patterns.shape[1])) # Maybe Hebb for initialization?
-        weights = LearningRules.hebb(patterns) # Maybe Hebb for initialization?
-        y_array = np.zeros((patterns.shape[1], patterns.shape[1]))
+        weights = LearningRules.hebb(patterns)
         max_iter = 10
-        print(weights)
+        factor = patterns.shape[1] * patterns.shape[1]
         for iter in range(max_iter):
-            delta_weights = np.zeros((patterns.shape[1], patterns.shape[1]))
+            print(f'Learning patterns with Oja\'s rule: iteration {iter + 1}/{max_iter}...')
+            delta_weights = np.zeros(weights.shape)
             y_array = weights @ patterns.T
             for i in range(patterns.shape[1]):
                 for j in range(patterns.shape[1]):
                     if i == j:
                         continue
                     delta_weights[i, j] = y_array[i, :] @ (patterns[:, j] - weights[i, j] * y_array[i, :]).T
-            new_weights = MathUtils.normalize(weights + MathUtils.normalize(delta_weights, -1, 1), -1, 1)
-            np.fill_diagonal(new_weights, 0)
-            print(f'Iteration {iter}: \n', new_weights)
-            diff = np.linalg.norm(new_weights - weights)
-            weights = new_weights
+            delta_weights = delta_weights / factor
+            weights = weights + delta_weights
+            diff = np.linalg.norm(delta_weights)
+            print(f'Delta = {diff}')
             if diff < 1e-5:
-                print (f'Converged after {iter} iterations')
+                print (f'Learning converged after {iter} iterations')
                 break
-        print(f'Final weights:', weights)
         return weights
