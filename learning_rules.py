@@ -4,6 +4,7 @@ import numpy as np
 
 LearningRuleType = Callable[[np.ndarray], np.ndarray]
 
+MAX_ITERATIONS = 10
 
 class LearningRules:
 
@@ -16,12 +17,11 @@ class LearningRules:
     @staticmethod
     def oja(patterns: np.ndarray):
         weights = LearningRules.hebb(patterns)
-        max_iter = 10
         factor = patterns.shape[1] * patterns.shape[1]
         prev_dif = np.inf
         prev_weights = weights
-        for iter in range(max_iter):
-            print(f'Learning patterns with Oja\'s rule: iteration {iter + 1}/{max_iter}...')
+        for iter in range(MAX_ITERATIONS):
+            print(f'Learning patterns with Oja\'s rule: iteration {iter + 1}/{MAX_ITERATIONS}...')
             delta_weights = np.zeros(weights.shape)
             y_array = weights @ patterns.T
             for i in range(patterns.shape[1]):

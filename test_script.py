@@ -10,7 +10,7 @@ np.random.seed(1)
 
 # Hopfield network parameters
 NUMBER_OF_NEURONS_TO_UPDATE = 16
-MAX_ITERATIONS = 15
+MAX_ITERATIONS = 50
 LEARNING_RULE = LearningRules.oja
 IS_UPDATE_SYNCHRONOUS = True
 
