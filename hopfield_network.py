@@ -10,7 +10,7 @@ class HopfieldNetwork:
     def __init__(self, patterns, is_update_synchronous):
         self.memory = patterns
         self.number_of_neurons = patterns.shape[1]
-        self.neurons_state = np.random.randint(-2, 2, (self.number_of_neurons, 1))
+        self.neurons_state = np.zeros((self.number_of_neurons, 1))
         self.weights = np.zeros((self.number_of_neurons, self.number_of_neurons))
         self.is_update_synchronous = is_update_synchronous
         self.asynchronous_update_iterator = cycle(range(self.number_of_neurons))

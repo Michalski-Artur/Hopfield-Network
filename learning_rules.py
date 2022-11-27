@@ -5,7 +5,7 @@ import numpy as np
 LearningRuleType = Callable[[np.ndarray], np.ndarray]
 
 MAX_ITERATIONS = 50
-
+# LEARNING_COEFF = 0.1
 
 class LearningRules:
 
@@ -18,6 +18,7 @@ class LearningRules:
     @staticmethod
     def oja(patterns: np.ndarray):
         weights = LearningRules.hebb(patterns)
+        # factor = LEARNING_COEFF / patterns.shape[1] ** 2
         #weights = np.zeros((patterns.shape[1], patterns.shape[1])) + 1 #Maybe better ? Or initialize with random?
         prev_dif = np.inf
         prev_weights = weights
@@ -31,8 +32,8 @@ class LearningRules:
             if diff < 1e-5:
                 print(f'Learning converged after {iter} iterations')
                 break
-            if abs(diff - prev_dif) < 1e-5:
-                print(f'Learning diverged after {iter} iterations')
+            if diff - prev_dif > 1:
+                print (f'Learning diverged after {iter} iterations')
                 weights = prev_weights
                 break
             prev_dif = diff
