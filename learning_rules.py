@@ -18,6 +18,8 @@ class LearningRules:
         weights = LearningRules.hebb(patterns)
         max_iter = 10
         factor = patterns.shape[1] * patterns.shape[1]
+        prev_dif = np.inf
+        prev_weights = weights
         for iter in range(max_iter):
             print(f'Learning patterns with Oja\'s rule: iteration {iter + 1}/{max_iter}...')
             delta_weights = np.zeros(weights.shape)
@@ -34,4 +36,10 @@ class LearningRules:
             if diff < 1e-5:
                 print (f'Learning converged after {iter} iterations')
                 break
+            if diff - prev_dif > 1e-5:
+                print (f'Learning diverged after {iter} iterations')
+                weights = prev_weights
+                break
+            prev_dif = diff
+            prev_weights = weights
         return weights

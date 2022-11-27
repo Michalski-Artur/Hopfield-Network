@@ -24,7 +24,8 @@ class HopfieldNetwork:
         while iterations_limit is None or iter < iterations_limit:
             self.__update_state(number_of_neurons_to_update)
             if data_visualizer is not None:
-                data_visualizer.visualize_step(self.neurons_state, iter)
+                is_last_iteration = iterations_limit is not None and iter == iterations_limit - 1
+                data_visualizer.visualize_step(self.neurons_state, iter, is_last_iteration)
             iter += 1
 
     def __set_initial_neurons_state(self, neurons_state):
