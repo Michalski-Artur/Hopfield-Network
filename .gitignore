@@ -129,4 +129,4 @@ dmypy.json
 .pyre/
 
 # Result output files from tests
-results/*.png
+results/*

@@ -27,11 +27,11 @@ class DataVisualizer:
         self.__axis[1].imshow(self.__input_pattern_unipolar.reshape(self.__single_pattern_size), cmap='RdPu')
         self.__axis[1].set_title('Input (noised) pattern', fontsize=self.__font_size)
         self.__axis[2].imshow(current_state_unipolar.reshape(self.__single_pattern_size), cmap='RdPu')
-        self.__axis[2].set_title(f'Step {step_number} of Hopfield network', fontsize=self.__font_size)
+        self.__axis[2].set_title(f'Step {step_number+1} of Hopfield network', fontsize=self.__font_size)
 
         if save_figure:
             if self.__output_path is not None:
-                self.__figure.savefig(f'{self.__output_path}_step{step_number}.png')
+                self.__figure.savefig(f'{self.__output_path}_step{step_number+1}.png')
             plt.close(self.__figure)
             return False
         else:

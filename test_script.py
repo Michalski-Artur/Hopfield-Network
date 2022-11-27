@@ -10,12 +10,13 @@ np.random.seed(1)
 
 # Hopfield network parameters
 NUMBER_OF_NEURONS_TO_UPDATE = 16
-MAX_ITERATIONS = 50
-LEARNING_RULE = LearningRules.oja
+MAX_ITERATIONS = 25
 IS_UPDATE_SYNCHRONOUS = True
+NOISE_LEVEL = 0.25
 
 # Read collection of patterns from file
-paths = ['data/animals-14x9.csv',
+paths = [
+'data/animals-14x9.csv',
 'data/large-25x25.csv',
 'data/large-25x25.plus.csv',
 'data/large-25x50.csv',
@@ -33,19 +34,24 @@ for path, size in zip(paths, sizes):
 
     # Create noised pattern
     noised_patterns = patterns.copy()
-    noise_level = 0.1
     for i in range(noised_patterns.shape[0]):
         for j in range(noised_patterns.shape[1]):
-            if np.random.random() < noise_level:
+            if np.random.random() < NOISE_LEVEL:
                 noised_patterns[i, j] = -patterns[i, j]
 
+    #OJA
     # Create network and initialize memory with collection of patterns
-    hopfield_network = HopfieldNetwork(patterns, IS_UPDATE_SYNCHRONOUS)
-    # Learn network using one of supported learning rules
-    hopfield_network.learning(LEARNING_RULE)
-
+    hopfield_network = HopfieldNetwork(patterns.copy(), IS_UPDATE_SYNCHRONOUS)
+    hopfield_network.learning(LearningRules.oja)
     for i in range(patterns.shape[0]):
         # Set network state to the noised image
-        data_visualizer = DataVisualizer(size, patterns[i], noised_patterns[i], f'Sample {i} from {path}', output_path+f'_sample{i}_oja')
+        data_visualizer = DataVisualizer(size, patterns[i], noised_patterns[i], f'Sample {i+1} from {path}, rule: Oja', output_path+f'_sample{i+1}_oja')
         hopfield_network.run(noised_patterns[i], NUMBER_OF_NEURONS_TO_UPDATE, MAX_ITERATIONS, data_visualizer)
 
+    # HEBB
+    hopfield_network = HopfieldNetwork(patterns.copy(), IS_UPDATE_SYNCHRONOUS)
+    hopfield_network.learning(LearningRules.hebb)
+    for i in range(patterns.shape[0]):
+        # Set network state to the noised image
+        data_visualizer = DataVisualizer(size, patterns[i], noised_patterns[i], f'Sample {i+1} from {path}, rule: Hebb', output_path+f'_sample{i+1}_hebb')
+        hopfield_network.run(noised_patterns[i], NUMBER_OF_NEURONS_TO_UPDATE, MAX_ITERATIONS, data_visualizer)
