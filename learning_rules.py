@@ -1,4 +1,4 @@
-from typing import Callable, Optional
+from typing import Callable
 from math_utils import MathUtils
 import numpy as np
 
