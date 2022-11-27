@@ -9,17 +9,17 @@ from learning_rules import LearningRules
 np.random.seed(1)
 
 # Hopfield network parameters
-learning_rule = LearningRules.hebb
+learning_rule = LearningRules.oja
 is_update_synchronous = True
 
 # Read collection of patterns from file
-path_to_file = 'data/large-25x25.csv'
+path_to_file = 'data/large-25x25.plus.csv'
 single_pattern_size = (25, 25)
 patterns = DataReader.read_data(path_to_file)
 
 # Create noised pattern
 noised_patterns = patterns.copy()
-noise_level = 0.1
+noise_level = 0.05
 for i in range(noised_patterns.shape[0]):
     for j in range(noised_patterns.shape[1]):
         if np.random.random() < noise_level:
