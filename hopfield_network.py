@@ -1,4 +1,5 @@
 import numpy as np
+from data_visualizer import DataVisualizer
 
 from learning_rules import LearningRuleType
 from itertools import cycle
@@ -17,10 +18,19 @@ class HopfieldNetwork:
     def learning(self, learning_rule: LearningRuleType):
         self.weights = learning_rule(self.memory)
 
-    def set_initial_neurons_state(self, neurons_state):
+    def run(self, test_sample, number_of_neurons_to_update = 1, iterations_limit = None, data_visualizer: DataVisualizer = None):
+        self.__set_initial_neurons_state(test_sample)
+        iter = 0
+        while iterations_limit is None or iter < iterations_limit:
+            self.__update_state(number_of_neurons_to_update)
+            if data_visualizer is not None:
+                data_visualizer.visualize_step(self.neurons_state, iter)
+            iter += 1
+
+    def __set_initial_neurons_state(self, neurons_state):
         self.neurons_state = neurons_state
 
-    def update_state(self, number_of_neurons_to_update=1):
+    def __update_state(self, number_of_neurons_to_update=1):
         self.__synchronous_state_update() if self.is_update_synchronous else self.__asynchronous_state_update(number_of_neurons_to_update)
 
     def __synchronous_state_update(self):
