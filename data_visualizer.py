@@ -7,7 +7,7 @@ class DataVisualizer:
         self.__figure_title = figure_title
         self.__dpi = self.MAX_DIMENSION / (3*single_pattern_size[1])
         self.__font_size = 1000 / self.__dpi
-        self.__single_pattern_size = single_pattern_size
+        self.__single_pattern_size = (single_pattern_size[1], single_pattern_size[0])
         self.__figsize = (single_pattern_size[1], single_pattern_size[0])
         self.__target_pattern_unipolar = (target_pattern + 1) / 2
         self.__input_pattern_unipolar = (input_pattern + 1) / 2
