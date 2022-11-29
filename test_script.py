@@ -9,10 +9,10 @@ from learning_rules import LearningRules
 np.random.seed(1)
 
 # Hopfield network parameters
-NUMBER_OF_NEURONS_TO_UPDATE = 16
-MAX_ITERATIONS = 25
+NUMBER_OF_NEURONS_TO_UPDATE = 8
+MAX_ITERATIONS = 15
 IS_UPDATE_SYNCHRONOUS = True
-NOISE_LEVEL = 0.25
+NOISE_LEVEL = 0.15
 
 # Read collection of patterns from file
 paths = [
@@ -24,7 +24,6 @@ paths = [
 'data/letters-abc-8x12.csv',
 'data/OCRA-12x30-cut.csv',
 'data/small-7x7.csv']
-
 
 sizes = [(14, 9), (25, 25), (25, 25), (25, 50), (14, 20), (8, 12), (12, 30), (7, 7)]
 
@@ -45,13 +44,15 @@ for path, size in zip(paths, sizes):
     hopfield_network.learning(LearningRules.oja)
     for i in range(patterns.shape[0]):
         # Set network state to the noised image
-        data_visualizer = DataVisualizer(size, patterns[i], noised_patterns[i], f'Sample {i+1} from {path}, rule: Oja', output_path+f'_sample{i+1}_oja')
-        hopfield_network.run(noised_patterns[i], NUMBER_OF_NEURONS_TO_UPDATE, MAX_ITERATIONS, data_visualizer)
+        input = noised_patterns[i].copy()
+        data_visualizer = DataVisualizer(size, patterns[i], input, f'Sample {i+1} from {path}, rule: Oja', output_path+f'_sample{i+1}_oja')
+        hopfield_network.run(input, NUMBER_OF_NEURONS_TO_UPDATE, MAX_ITERATIONS, data_visualizer)
 
     # HEBB
     hopfield_network = HopfieldNetwork(patterns.copy(), IS_UPDATE_SYNCHRONOUS)
     hopfield_network.learning(LearningRules.hebb)
     for i in range(patterns.shape[0]):
         # Set network state to the noised image
-        data_visualizer = DataVisualizer(size, patterns[i], noised_patterns[i], f'Sample {i+1} from {path}, rule: Hebb', output_path+f'_sample{i+1}_hebb')
-        hopfield_network.run(noised_patterns[i], NUMBER_OF_NEURONS_TO_UPDATE, MAX_ITERATIONS, data_visualizer)
+        input = noised_patterns[i].copy()
+        data_visualizer = DataVisualizer(size, patterns[i], input, f'Sample {i+1} from {path}, rule: Hebb', output_path+f'_sample{i+1}_hebb')
+        hopfield_network.run(input, NUMBER_OF_NEURONS_TO_UPDATE, MAX_ITERATIONS, data_visualizer)

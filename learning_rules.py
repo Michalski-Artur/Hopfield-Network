@@ -4,8 +4,8 @@ import numpy as np
 
 LearningRuleType = Callable[[np.ndarray], np.ndarray]
 
-MAX_ITERATIONS = 50
-LEARNING_COEFF = 0.1
+MAX_ITERATIONS = 5000
+LEARNING_COEFF = 1e-3
 
 class LearningRules:
 
@@ -18,29 +18,19 @@ class LearningRules:
     @staticmethod
     def oja(patterns: np.ndarray):
         weights = LearningRules.hebb(patterns)
-        factor = LEARNING_COEFF / patterns.shape[1] ** 2
-        prev_dif = np.inf
-        prev_weights = weights
         for iter in range(MAX_ITERATIONS):
             print(f'Learning patterns with Oja\'s rule: iteration {iter + 1}/{MAX_ITERATIONS}...')
-            delta_weights = np.zeros(weights.shape)
-            y_array = weights @ patterns.T
-            for i in range(patterns.shape[1]):
-                for j in range(patterns.shape[1]):
-                    if i == j:
-                        continue
-                    delta_weights[i, j] = y_array[i, :] @ (patterns[:, j] - weights[i, j] * y_array[i, :]).T
-            delta_weights = factor * delta_weights
-            weights = weights + delta_weights
-            diff = np.linalg.norm(delta_weights)
+            delta_pattern = np.zeros_like(weights)
+            delta_total = np.zeros_like(weights)
+            for pattern in patterns:
+                y_vector = np.sign(np.dot(weights, pattern.T))
+                delta_pattern = LEARNING_COEFF * (np.outer(y_vector, pattern) - np.square(y_vector) * weights)
+                delta_total += delta_pattern
+                weights += delta_pattern
+                np.fill_diagonal(weights, 0)
+            diff = np.linalg.norm(delta_total)
             print(f'Delta = {diff}')
-            if diff < 1e-5:
+            if diff < 1e-6:
                 print (f'Learning converged after {iter} iterations')
                 break
-            if diff - prev_dif > 1:
-                print (f'Learning diverged after {iter} iterations')
-                weights = prev_weights
-                break
-            prev_dif = diff
-            prev_weights = weights
         return weights
