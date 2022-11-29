@@ -20,15 +20,12 @@ class LearningRules:
         weights = LearningRules.hebb(patterns)
         for iter in range(MAX_ITERATIONS):
             print(f'Learning patterns with Oja\'s rule: iteration {iter + 1}/{MAX_ITERATIONS}...')
-            delta_pattern = np.zeros_like(weights)
-            delta_total = np.zeros_like(weights)
+            delta = np.zeros_like(weights)
             for pattern in patterns:
                 y_vector = np.sign(np.dot(weights, pattern.T))
-                delta_pattern = LEARNING_COEFF * (np.outer(y_vector, pattern) - np.square(y_vector) * weights)
-                delta_total += delta_pattern
-                weights += delta_pattern
-                np.fill_diagonal(weights, 0)
-            diff = np.linalg.norm(delta_total)
+                delta += LEARNING_COEFF * (np.outer(y_vector, pattern) - np.square(y_vector) * weights)
+            weights += delta
+            diff = np.linalg.norm(delta)
             print(f'Delta = {diff}')
             if diff < 1e-6:
                 print (f'Learning converged after {iter} iterations')
