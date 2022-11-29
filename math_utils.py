@@ -13,3 +13,7 @@ class MathUtils:
         if np.max(np.abs(data)) == 0:
             return data
         return data / np.max(np.abs(data))
+
+    @staticmethod
+    def sign(data: np.ndarray) -> np.ndarray:
+        return 2 * (data >= 0) - 1

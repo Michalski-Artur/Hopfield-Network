@@ -1,6 +1,8 @@
 from typing import Callable
 import numpy as np
 
+from math_utils import MathUtils
+
 LearningRuleType = Callable[[np.ndarray], np.ndarray]
 
 MAX_ITERATIONS = 100
@@ -11,7 +13,7 @@ class LearningRules:
     @staticmethod
     def hebb(patterns: np.ndarray):
         weights = patterns.T @ patterns / patterns.shape[0]
-        # np.fill_diagonal(weights, 0)
+        np.fill_diagonal(weights, 0)
         return weights
 
     @staticmethod
@@ -22,8 +24,7 @@ class LearningRules:
             delta = np.zeros_like(weights)
             for pattern in patterns:
                 factor = LEARNING_COEFF / (patterns.shape[0] * patterns.shape[1])
-                y_vector = np.sign(np.dot(weights, pattern))
-                y_vector[y_vector == 0] = 1
+                y_vector = MathUtils.sign(np.dot(weights, pattern))
                 delta += factor * (np.dot(y_vector, pattern) - np.square(y_vector) * weights)
             weights += delta
             diff = np.linalg.norm(delta)
