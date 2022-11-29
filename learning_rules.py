@@ -1,18 +1,17 @@
 from typing import Callable
-from math_utils import MathUtils
 import numpy as np
 
 LearningRuleType = Callable[[np.ndarray], np.ndarray]
 
-MAX_ITERATIONS = 5000
-LEARNING_COEFF = 1e-3
+MAX_ITERATIONS = 100
+LEARNING_COEFF = 1e-6
 
 class LearningRules:
 
     @staticmethod
     def hebb(patterns: np.ndarray):
-        weights = (1 / patterns.shape[0]) * patterns.T @ patterns
-        np.fill_diagonal(weights, 0)
+        weights = patterns.T @ patterns / patterns.shape[0]
+        # np.fill_diagonal(weights, 0)
         return weights
 
     @staticmethod
@@ -22,8 +21,10 @@ class LearningRules:
             print(f'Learning patterns with Oja\'s rule: iteration {iter + 1}/{MAX_ITERATIONS}...')
             delta = np.zeros_like(weights)
             for pattern in patterns:
-                y_vector = np.sign(np.dot(weights, pattern.T))
-                delta += LEARNING_COEFF * (np.outer(y_vector, pattern) - np.square(y_vector) * weights)
+                factor = LEARNING_COEFF / (patterns.shape[0] * patterns.shape[1])
+                y_vector = np.sign(np.dot(weights, pattern))
+                y_vector[y_vector == 0] = 1
+                delta += factor * (np.dot(y_vector, pattern) - np.square(y_vector) * weights)
             weights += delta
             diff = np.linalg.norm(delta)
             print(f'Delta = {diff}')

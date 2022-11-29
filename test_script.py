@@ -12,7 +12,7 @@ np.random.seed(1)
 NUMBER_OF_NEURONS_TO_UPDATE = 8
 MAX_ITERATIONS = 15
 IS_UPDATE_SYNCHRONOUS = True
-NOISE_LEVEL = 0.15
+NOISE_LEVEL = 0.0
 
 # Read collection of patterns from file
 paths = [
@@ -27,6 +27,9 @@ paths = [
 
 sizes = [(14, 9), (25, 25), (25, 25), (25, 50), (14, 20), (8, 12), (12, 30), (7, 7)]
 
+paths = paths[2:3]
+sizes = sizes[2:3]
+
 for path, size in zip(paths, sizes):
     patterns = DataReader.read_data(path)
     output_path = path.replace('data', 'results').replace('.csv', '')
@@ -38,15 +41,15 @@ for path, size in zip(paths, sizes):
             if np.random.random() < NOISE_LEVEL:
                 noised_patterns[i, j] = -patterns[i, j]
 
-    #OJA
-    # Create network and initialize memory with collection of patterns
-    hopfield_network = HopfieldNetwork(patterns.copy(), IS_UPDATE_SYNCHRONOUS)
-    hopfield_network.learning(LearningRules.oja)
-    for i in range(patterns.shape[0]):
-        # Set network state to the noised image
-        input = noised_patterns[i].copy()
-        data_visualizer = DataVisualizer(size, patterns[i], input, f'Sample {i+1} from {path}, rule: Oja', output_path+f'_sample{i+1}_oja')
-        hopfield_network.run(input, NUMBER_OF_NEURONS_TO_UPDATE, MAX_ITERATIONS, data_visualizer)
+    # #OJA
+    # # Create network and initialize memory with collection of patterns
+    # hopfield_network = HopfieldNetwork(patterns.copy(), IS_UPDATE_SYNCHRONOUS)
+    # hopfield_network.learning(LearningRules.oja)
+    # for i in range(patterns.shape[0]):
+    #     # Set network state to the noised image
+    #     input = noised_patterns[i].copy()
+    #     data_visualizer = DataVisualizer(size, patterns[i], input, f'Sample {i+1} from {path}, rule: Oja', output_path+f'_sample{i+1}_oja')
+    #     hopfield_network.run(input, NUMBER_OF_NEURONS_TO_UPDATE, MAX_ITERATIONS, data_visualizer)
 
     # HEBB
     hopfield_network = HopfieldNetwork(patterns.copy(), IS_UPDATE_SYNCHRONOUS)

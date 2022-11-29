@@ -8,7 +8,6 @@ class DataVisualizer:
         self.__dpi = self.MAX_DIMENSION / (3*single_pattern_size[1])
         self.__font_size = 1000 / self.__dpi
         self.__single_pattern_size = (single_pattern_size[1], single_pattern_size[0])
-        self.__figsize = (single_pattern_size[1], single_pattern_size[0])
         self.__target_pattern_unipolar = (target_pattern + 1) / 2
         self.__input_pattern_unipolar = (input_pattern + 1) / 2
         self.__output_path = output_path
@@ -20,7 +19,7 @@ class DataVisualizer:
         if self.__figure is not None:
             save_figure = save_figure or not plt.fignum_exists(self.__figure.number)
         if self.__figure is None or self.__axis is None or not plt.fignum_exists(self.__figure.number):
-            self.__figure, self.__axis = plt.subplots(1, 3, figsize=self.__figsize, dpi=self.__dpi)
+            self.__figure, self.__axis = plt.subplots(1, 3, figsize=self.__single_pattern_size, dpi=self.__dpi)
             self.__figure.suptitle(self.__figure_title, fontsize=2*self.__font_size)
         self.__axis[0].imshow(self.__target_pattern_unipolar.reshape(self.__single_pattern_size), cmap='RdPu')
         self.__axis[0].set_title('Target pattern', fontsize=self.__font_size)

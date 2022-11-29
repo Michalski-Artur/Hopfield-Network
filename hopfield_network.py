@@ -40,6 +40,7 @@ class HopfieldNetwork:
         for neuron_index in range(self.number_of_neurons):
             updated_states.append(self.__threshold_state_change_function(neuron_index))
         self.neurons_state = np.array(updated_states)
+        print(f'Balance: {np.count_nonzero(self.neurons_state == 1)} positive, {np.count_nonzero(self.neurons_state == -1)} negative')
 
     def __asynchronous_state_update(self, number_of_neurons_to_update):
         for _ in range(number_of_neurons_to_update):
@@ -50,5 +51,5 @@ class HopfieldNetwork:
         return np.dot(self.weights[neuron_index, :], self.neurons_state)
 
     def __threshold_state_change_function(self, neuron_index):
-        return 1 if self.__activation_function(neuron_index) > 0 else -1
+        return 1 if self.__activation_function(neuron_index) >= 0 else -1
 
