@@ -33,4 +33,4 @@ hopfield_network.learning(learning_rule)
 
 for i in range(patterns.shape[0]):
     data_visualizer = DataVisualizer(single_pattern_size, patterns[i], noised_patterns[i], f'Sample {i} from {path_to_file}')
-    hopfield_network.run(noised_patterns[i], 16, 50, data_visualizer)
+    hopfield_network.predict(noised_patterns[i], 16, 50, data_visualizer)
