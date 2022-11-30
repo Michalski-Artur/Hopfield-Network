@@ -35,5 +35,5 @@ class DataVisualizer:
             return False
         else:
             plt.draw()
-            plt.pause(0.1)
+            plt.pause(0.01)
         return True

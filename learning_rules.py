@@ -5,7 +5,7 @@ from math_utils import MathUtils
 
 LearningRuleType = Callable[[np.ndarray], np.ndarray]
 
-MAX_ITERATIONS = 100
+MAX_ITERATIONS = 5000
 LEARNING_COEFF = 1e-6
 
 class LearningRules:

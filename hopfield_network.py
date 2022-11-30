@@ -18,7 +18,7 @@ class HopfieldNetwork:
     def learning(self, learning_rule: LearningRuleType):
         self.weights = learning_rule(self.memory)
 
-    def run(self, test_sample, number_of_neurons_to_update = 1, iterations_limit = None, data_visualizer: DataVisualizer = None):
+    def predict(self, test_sample, number_of_neurons_to_update = 1, iterations_limit = None, data_visualizer: DataVisualizer = None):
         self.__set_initial_neurons_state(test_sample)
         iter = 0
         while iterations_limit is None or iter < iterations_limit:
@@ -40,7 +40,6 @@ class HopfieldNetwork:
         for neuron_index in range(self.number_of_neurons):
             updated_states.append(self.__threshold_state_change_function(neuron_index))
         self.neurons_state = np.array(updated_states)
-        print(f'Balance: {np.count_nonzero(self.neurons_state == 1)} positive, {np.count_nonzero(self.neurons_state == -1)} negative')
 
     def __asynchronous_state_update(self, number_of_neurons_to_update):
         for _ in range(number_of_neurons_to_update):
