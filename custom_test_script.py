@@ -14,7 +14,7 @@ MAX_ITERATIONS = 15
 IS_UPDATE_SYNCHRONOUS = True
 NOISE_LEVEL = 0.0
 
-paths = ['data/custom_tests.csv']
+paths = ['data/custom-150x150.csv']
 sizes = [(150, 150)]
 
 for path, size in zip(paths, sizes):
