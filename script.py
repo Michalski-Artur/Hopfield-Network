@@ -32,10 +32,5 @@ hopfield_network = HopfieldNetwork(patterns, is_update_synchronous)
 hopfield_network.learning(learning_rule)
 
 for i in range(patterns.shape[0]):
-    # Set network state to the noised image
-    hopfield_network.set_initial_neurons_state(noised_patterns[i])
-    # Visualize original pattern and convergence
-    DataVisualizer.visualize_pattern(noised_patterns[i].reshape(single_pattern_size))
-    DataVisualizer.visualize_convergence(hopfield_network, single_pattern_size)
-
-
+    data_visualizer = DataVisualizer(single_pattern_size, patterns[i], noised_patterns[i], f'Sample {i} from {path_to_file}')
+    hopfield_network.predict(noised_patterns[i], 16, 50, data_visualizer)
